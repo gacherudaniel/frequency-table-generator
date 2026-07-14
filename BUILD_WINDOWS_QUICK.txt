@@ -1,0 +1,62 @@
+================================================================================
+           BUILDING WINDOWS EXECUTABLE - STEP BY STEP
+================================================================================
+
+You need access to a Windows computer to build the Windows .exe file.
+
+PREREQUISITES
+-------------
+- Windows 10 or Windows 11 computer
+- Internet connection
+- 1.5 GB free disk space
+
+STEPS TO BUILD
+--------------
+
+1. COPY FILES TO WINDOWS
+   Copy the entire 'webapp' folder to your Windows machine
+
+2. ON WINDOWS - RUN SETUP
+   Double-click: setup_windows.bat
+   
+   This installs all dependencies (takes 5-10 minutes)
+   Wait for "Setup completed successfully!"
+
+3. ON WINDOWS - BUILD EXECUTABLE
+   Double-click: build_desktop.bat
+   
+   This creates the .exe file (takes 2-5 minutes)
+   Wait for "Build successful!"
+
+4. RESULT
+   Your Windows executable: dist\FrequencyTableGenerator.exe
+   Size: ~200-300 MB
+
+5. DISTRIBUTE
+   Double-click: package_for_distribution_windows.bat
+   
+   Creates a complete package ready to share with users
+   Right-click folder → Send to → Compressed (zipped) folder
+
+WHAT USERS NEED
+---------------
+✓ Nothing! The .exe is standalone
+✓ No Python needed
+✓ No installation needed
+✓ Just double-click to run
+
+If Windows shows security warning:
+  Click "More info" → "Run anyway"
+  (This is normal for unsigned applications)
+
+DETAILED INSTRUCTIONS
+---------------------
+See: BUILD_WINDOWS.md
+
+NEED HELP?
+----------
+- All batch scripts (.bat files) have built-in error messages
+- Run from Command Prompt to see detailed output
+- Check BUILD_WINDOWS.md for troubleshooting
+
+================================================================================

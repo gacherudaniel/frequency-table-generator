@@ -2,9 +2,18 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+venv-desktop/
 env/
 .env
 uploads/*
 !uploads/.gitkeep
 .DS_Store
 *.log
+
+# PyInstaller build artifacts (desktop app)
+build/
+dist/
+*.spec.backup
+*.exe
+*.app
+*.dmg

@@ -1,11 +1,25 @@
-# Frequency Table Generator (Web App)
+# Frequency Table Generator
 
-A small Flask web app that lets anyone — no coding required — upload a Stata
-(`.dta`) file, choose a few options, and download a formatted Excel workbook
-of frequency tables (weighted or unweighted, one sheet per variable).
+A tool that lets anyone — no coding required — upload a Stata (`.dta`) file, choose a few options, and download a formatted Excel workbook of frequency tables (weighted or unweighted, one sheet per variable).
 
-This replaces the Colab notebook version with a proper web app: users never
-see or touch code.
+**Available in two versions:**
+
+## 🖥️ Desktop Application (NEW!)
+- **Single executable file** - no installation needed
+- Works on **Windows and Linux**
+- All processing happens **locally on your computer**
+- **No internet required** after download
+- Perfect for offline use or sensitive data
+
+👉 **[See Desktop App Documentation](README_DESKTOP.md)**
+
+## 🌐 Web Application
+- Access from **any browser**
+- Multiple users can use it simultaneously
+- Host it yourself or deploy to cloud
+- Great for **team sharing**
+
+👉 **Continue reading below for web app setup**
 
 ---
 
