@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<div class="app-card">
+  <h2 class="h5 mb-3"> Finished!</h2>
+
+  <p>Your workbook is ready. Click below to download it.</p>
+  <a href="{{ download_url }}" class="btn btn-primary btn-lg mb-4"> Download Frequency_Tables.xlsx</a>
+
+  <h3 class="h6">Summary</h3>
+  <table class="table table-sm table-bordered w-auto">
+    <tbody>
+      {% for key, value in summary.items() %}
+      <tr>
+        <th class="text-nowrap">{{ key }}</th>
+        <td>{{ value }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if skipped %}
+  <h3 class="h6 mt-4">Skipped Variables ({{ n_skipped }})</h3>
+  <div style="max-height: 260px; overflow-y: auto;">
+    <table class="table table-sm table-striped">
+      <thead><tr><th>Variable</th><th>Reason</th></tr></thead>
+      <tbody>
+        {% for item in skipped %}
+        <tr><td><code>{{ item.Variable }}</code></td><td>{{ item.Reason }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <hr class="my-4">
+  <a href="{{ url_for('start_over') }}" class="btn btn-outline-secondary">Analyze another dataset</a>
+</div>
+{% endblock %}

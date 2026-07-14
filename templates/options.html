@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Choose Options{% endblock %}
+
+{% block content %}
+<div class="app-card mb-4">
+  <h2 class="h5 mb-3">Step 2 — Dataset loaded</h2>
+  <p>
+    File: <code class="filename">{{ filename }}</code><br>
+    Observations: <strong>{{ "{:,}".format(n_obs) }}</strong> &nbsp;|&nbsp;
+    Variables: <strong>{{ n_vars }}</strong>
+  </p>
+
+  <details>
+    <summary class="mb-2" style="cursor:pointer;">Show variable list ({{ n_vars }})</summary>
+    <div style="max-height: 320px; overflow-y: auto;">
+      <table class="table table-sm table-striped table-vars">
+        <thead>
+          <tr><th>#</th><th>Variable</th><th>Type</th><th>Label</th><th># Distinct Values</th></tr>
+        </thead>
+        <tbody>
+          {% for v in variables %}
+          <tr>
+            <td>{{ v.index }}</td>
+            <td><code>{{ v.name }}</code></td>
+            <td>{{ v.dtype }}</td>
+            <td>{{ v.label }}</td>
+            <td>{{ v.n_unique }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<div class="app-card">
+  <h2 class="h5 mb-3">Step 3 — Choose your analysis options</h2>
+
+  <form action="{{ url_for('generate') }}" method="post">
+    <div class="mb-3">
+      <label class="form-label">Weighting</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="weight_mode" id="weight_mode_none" value="none" checked>
+        <label class="form-check-label" for="weight_mode_none">
+          No weighting (unweighted frequencies)
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="weight_mode" id="weight_mode_variable" value="variable">
+        <label class="form-check-label" for="weight_mode_variable">
+          Use a weight variable already in the dataset
+        </label>
+      </div>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="weight_mode" id="weight_mode_value" value="value">
+        <label class="form-check-label" for="weight_mode_value">
+          Apply a single weight value to every observation
+        </label>
+      </div>
+
+      <div id="weight_variable_group" class="ms-4 mb-2" style="display:none;">
+        <select class="form-select" id="weight_var" name="weight_var">
+          <option value="">— choose a variable —</option>
+          {% for col in column_names %}
+          <option value="{{ col }}">{{ col }}</option>
+          {% endfor %}
+        </select>
+        <div class="form-text">Choose a column that already holds a survey/sampling weight for each observation.</div>
+      </div>
+
+      <div id="weight_value_group" class="ms-4 mb-2" style="display:none;">
+        <input type="number" class="form-control" id="weight_value" name="weight_value" step="any" min="0" placeholder="e.g. 100">
+        <div class="form-text">
+          Use this when the dataset has no weight column but the design weight is known
+          (e.g. 1 &divide; probability of selection). This value is applied to every
+          sampled observation, so the frequencies reflect the population the sample represents.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="exclude_id_vars" name="exclude_id_vars" checked>
+          <label class="form-check-label" for="exclude_id_vars">
+            Exclude ID variables <span class="text-muted">(e.g. unique identifiers)</span>
+          </label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="exclude_continuous" name="exclude_continuous">
+          <label class="form-check-label" for="exclude_continuous">
+            Exclude continuous numeric variables <span class="text-muted">(e.g. income, age in years)</span>
+          </label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="categorical_only" name="categorical_only">
+          <label class="form-check-label" for="categorical_only">
+            Only tabulate categorical variables
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="max_categories" class="form-label">Maximum categories before a variable is skipped</label>
+        <input type="number" class="form-control" id="max_categories" name="max_categories" value="50" min="2" max="1000">
+        <div class="form-text">Variables with more distinct values than this will be skipped.</div>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <button type="submit" class="btn btn-success">Generate Frequency Tables</button>
+    <a href="{{ url_for('start_over') }}" class="btn btn-outline-secondary ms-2">Start Over</a>
+  </form>
+</div>
+
+<script>
+  (function () {
+    var modeRadios = document.querySelectorAll('input[name="weight_mode"]');
+    var variableGroup = document.getElementById('weight_variable_group');
+    var valueGroup = document.getElementById('weight_value_group');
+
+    function updateWeightUI() {
+      var mode = document.querySelector('input[name="weight_mode"]:checked').value;
+      variableGroup.style.display = (mode === 'variable') ? 'block' : 'none';
+      valueGroup.style.display = (mode === 'value') ? 'block' : 'none';
+    }
+
+    modeRadios.forEach(function (radio) {
+      radio.addEventListener('change', updateWeightUI);
+    });
+    updateWeightUI();
+  })();
+</script>
+{% endblock %}
